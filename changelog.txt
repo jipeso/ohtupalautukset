@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 muutos 1
+=======
+muutos 2
+>>>>>>> 108a531 (muutos mainissa)
