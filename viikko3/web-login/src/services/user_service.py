@@ -39,8 +39,22 @@ class UserService:
     def validate(self, username, password, password_confirmation):
         if not username or not password:
             raise UserInputError("Username and password are required")
+        
+        if password != password_confirmation:
+            raise UserInputError("Passwords do not match")
 
-        # toteuta loput tarkastukset tänne ja nosta virhe virhetilanteissa
+        if len(username) < 3:
+            raise UserInputError("Username length must be at least 3")
+        
+        if self._user_repository.find_by_username(username):
+            raise UserInputError("Username is taken")
+        
+        if len(password) < 8:
+            raise UserInputError("Password length must be at least 8")
+        
+        if password.isalpha():
+            raise UserInputError("Password must contain numbers or special characters")
+
 
 
 user_service = UserService()
