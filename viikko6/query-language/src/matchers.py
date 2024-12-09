@@ -35,7 +35,7 @@ class All:
     def test(self, player):
         if player:
             return True
-
+        
 class PlaysIn:
     def __init__(self, team):
         self._team = team
@@ -63,3 +63,22 @@ class HasFewerThan:
         player_value = getattr(player, self._attr)
 
         return player_value < self._value
+    
+class QueryBuilder:
+    def __init__(self, query = All()):
+        self.query_olio = query
+
+    def plays_in(self, team):
+        return QueryBuilder(And(self.query_olio, PlaysIn(team)))
+    
+    def has_at_least(self, value, attr):
+        return QueryBuilder(And(self.query_olio, HasAtLeast(value, attr)))
+    
+    def has_fewer_than(self, value, attr):
+        return QueryBuilder(And(self.query_olio, HasFewerThan(value, attr)))
+    
+    def one_of(self, *queries):
+        return QueryBuilder(Or(*queries))
+
+    def build(self):
+        return self.query_olio
